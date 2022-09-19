@@ -5,11 +5,51 @@ using UnityEngine;
 
 public class WanderingAI : MonoBehaviour
 {
-    public float speed = 3.0f;
+    public float speed = 1.0f;
     public float obstacleRange = 5.0f;
     private bool _alive;
+    [SerializeField] private GameObject fireballPrifab;//
+    private GameObject _fireball;//
+    private void Start()
+    {
+        _alive = true;
+    }
+    void Update()
+    {
+        if (_alive == true)
+        {
+            transform.Translate(0, 0, speed * Time.deltaTime);
+            Ray ray = new Ray(transform.position, transform.forward);
+            RaycastHit hit;
+            if (Physics.SphereCast(ray, 0.75f, out hit))
+            {
+                GameObject hitObject = hit.transform.gameObject;
+                if (hitObject.GetComponent<PlayerCharacter>())
+                {
+                    if (_fireball == null)
+                    {
+                        _fireball = Instantiate(fireballPrifab) as GameObject;
+                        _fireball.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
+                        _fireball.transform.rotation = transform.rotation;
+                    }
+                }
 
-    [SerializeField] private GameObject fireballPrefab;
+
+                else if (hit.distance < obstacleRange)
+                {
+                    float angle = Random.Range(-110, 110);
+                    transform.Rotate(0, angle, 0);
+                }
+            }
+        }
+    }
+    public void SetAlive(bool alive)
+    {
+        _alive = alive;
+    }
+}
+
+/* [SerializeField] private GameObject fireballPrefab;
     private GameObject _fireball;
     private void Start()
     {
@@ -19,7 +59,7 @@ public class WanderingAI : MonoBehaviour
 
     void Update()
     {
-        if (_alive)
+        if (_alive == true)
         {
             transform.Translate(0, 0, speed * Time.deltaTime);
             Ray ray = new Ray(transform.position, transform.forward);
@@ -48,4 +88,4 @@ public class WanderingAI : MonoBehaviour
     {
         _alive = alive;
     }
-}
+}*/

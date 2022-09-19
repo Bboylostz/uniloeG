@@ -13,7 +13,7 @@ public class ReactiveTarget : MonoBehaviour
         }
         StartCoroutine(Die());
     }
-    private IEnumerator Die()
+    private IEnumerator Die()//при попадании опрокидывается и уничтож
     {
         this.transform.Rotate(-75, 0, 0);
         yield return new WaitForSeconds(1.5f);
